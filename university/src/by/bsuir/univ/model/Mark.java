@@ -17,6 +17,13 @@ public class Mark {
 	}
 
 	/**
+	 * @param grade
+	 */
+	public Mark(float grade) {
+		this.grade = grade;
+	}
+
+	/**
 	 * @return the grade
 	 */
 	public float getGrade() {

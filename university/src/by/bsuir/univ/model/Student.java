@@ -7,7 +7,7 @@ package by.bsuir.univ.model;
  * @author SBozhko
  * 
  */
-public class Student extends User {
+public class Student extends User implements Comparable<Student> {
 	private Mark averageMark = new Mark();
 
 	public Student() {
@@ -26,6 +26,11 @@ public class Student extends User {
 	 */
 	public void setAverageMark(Mark averageMark) {
 		this.averageMark = averageMark;
+	}
+
+	@Override
+	public int compareTo(Student otherStudent) {
+		return (int) (this.averageMark.getGrade() - otherStudent.averageMark.getGrade());
 	}
 
 	@Override
