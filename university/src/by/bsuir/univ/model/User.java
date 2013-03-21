@@ -76,8 +76,7 @@ public abstract class User {
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + " [id=" + id + ", fullName=" + fullName + ", email=" + email
-				+ ", password=" + password + "]";
+		return "id=" + id + ", fullName=" + fullName + ", email=" + email + ", password=" + password + ";";
 	}
 
 	@Override

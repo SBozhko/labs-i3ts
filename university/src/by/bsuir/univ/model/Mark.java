@@ -40,7 +40,7 @@ public class Mark {
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + " [grade=" + grade + "]";
+		return "" + grade;
 	}
 
 	@Override

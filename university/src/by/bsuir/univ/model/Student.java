@@ -35,7 +35,7 @@ public class Student extends User implements Comparable<Student> {
 
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + " [averageMark=" + averageMark + "]" + super.toString();
+		return "averageMark=" + averageMark + ", " + super.toString();
 	}
 
 	@Override
