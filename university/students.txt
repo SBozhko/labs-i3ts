@@ -1,0 +1,1 @@
+averageMark=10.0, id=0, fullName=Student2 Student2 Student2, email=null, password=null; averageMark=15.0, id=0, fullName=Student1 Student1 Student1, email=null, password=null; averageMark=18.0, id=0, fullName=Student3 Student3 Student3, email=null, password=null; 

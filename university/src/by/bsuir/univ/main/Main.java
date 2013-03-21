@@ -3,6 +3,7 @@
  */
 package by.bsuir.univ.main;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +19,7 @@ import by.bsuir.univ.util.Util;
  */
 public class Main {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Teacher teacher = new Teacher();
 		teacher.setFullName("Teacher Teacher Teacher");
 		System.out.println(teacher);
@@ -46,19 +47,16 @@ public class Main {
 		Collections.sort(students);
 
 		System.out.println("------------------1");
-
-		StringBuilder stringBuilder = new StringBuilder();
-		for (Student s : students) {
-			stringBuilder.append(s).append(" ");
-		}
 		
-		System.out.println(stringBuilder);
+		System.out.println(Util.getListAsString(students));
+		Util.printToFile(students, "students.txt");
+		
 
-		String studentsToParse = stringBuilder.toString();
+		String studentsToParse = Util.getListAsString(students);
 		
 		System.out.println("------------------2");
 
-		List<Student> parsedStudents = Util.parseStudents(studentsToParse);
+		List<Student> parsedStudents = Util.readFromFile("students.txt");
 
 		System.out.println("------------------3");
 
