@@ -8,6 +8,8 @@ package by.bsuir.univ.model;
  * 
  */
 public class Mark {
+	private static final float MIN_POSITIVE_GRADE = 4;
+	public static final int BAD_MARKS_COUNT_TO_DISMISS = 4;
 	private float grade;
 
 	/**
@@ -63,6 +65,19 @@ public class Mark {
 		if (Float.floatToIntBits(grade) != Float.floatToIntBits(other.grade))
 			return false;
 		return true;
+	}
+
+	public Mark add(Mark value) {
+		grade += value.getGrade();
+		return this;
+	}
+
+	public Mark calculateAverage(int marksCount) {
+		return new Mark(grade / marksCount);
+	}
+
+	public boolean isPositive() {
+		return grade >= MIN_POSITIVE_GRADE;
 	}
 
 }
