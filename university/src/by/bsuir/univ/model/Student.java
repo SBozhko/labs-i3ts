@@ -1,66 +1,134 @@
-/**
- * 
- */
 package by.bsuir.univ.model;
 
-/**
- * @author SBozhko
- * 
- */
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class Student extends User implements Comparable<Student> {
-	private Mark averageMark = new Mark();
 
-	public Student() {
-	}
+    private Mark averageMark = new Mark();
+    private Map<Course, Mark> courses = new LinkedHashMap<Course, Mark>();
+    private int badMarksCount = 0;
+    private StudentStatus status = StudentStatus.ACTIVE;
 
-	/**
-	 * @return the averageMark
-	 */
-	public Mark getAverageMark() {
-		return averageMark;
-	}
+    public Student() {
+    }
 
-	/**
-	 * @param averageMark
-	 *            the averageMark to set
-	 */
-	public void setAverageMark(Mark averageMark) {
-		this.averageMark = averageMark;
-	}
+    public int getBadMarksCount() {
+        return badMarksCount;
+    }
 
-	@Override
-	public int compareTo(Student otherStudent) {
-		return (int) (this.averageMark.getGrade() - otherStudent.averageMark.getGrade());
-	}
+    public void setBadMarksCount(int badMarksCount) {
+        this.badMarksCount = badMarksCount;
+    }
 
-	@Override
-	public String toString() {
-		return "averageMark=" + averageMark + ", " + super.toString();
-	}
+    public StudentStatus getStatus() {
+        return status;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((averageMark == null) ? 0 : averageMark.hashCode());
-		return result;
-	}
+    public void setStatus(StudentStatus studentStatus) {
+        this.status = studentStatus;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (!(obj instanceof Student))
-			return false;
-		Student other = (Student) obj;
-		if (averageMark == null) {
-			if (other.averageMark != null)
-				return false;
-		} else if (!averageMark.equals(other.averageMark))
-			return false;
-		return true;
-	}
+    public Mark getAverageMark() {
+        return averageMark;
+    }
 
+    public void setAverageMark(Mark averageMark) {
+        this.averageMark = averageMark;
+    }
+
+    public Map<Course, Mark> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Map<Course, Mark> courses) {
+        this.courses = courses;
+    }
+
+    /**
+     *
+     * @param course
+     * @param mark
+     * @return average mark after adding new mark
+     */
+    public Mark addCourseAndMark(Course course, Mark mark) {
+        courses.put(course, mark);
+
+        Mark marksSum = new Mark();
+        for (Map.Entry<Course, Mark> e : courses.entrySet()) {
+            marksSum.add(e.getValue());
+        }
+
+        averageMark = marksSum.calculateAverage(courses.size());
+
+        checkBadMaksCount(mark);
+        mark.checkPositive();
+
+        return averageMark;
+    }
+
+    private void checkBadMaksCount(Mark mark) {
+        if (!mark.checkPositive()) {
+            badMarksCount++;
+        }
+        if (badMarksCount == Mark.BAD_MARKS_COUNT_TO_DISMISS) {
+            sendEmail();
+        }
+
+    }
+
+    public void sendEmail() {
+        if (badMarksCount == Mark.BAD_MARKS_COUNT_TO_DISMISS) {
+            status = StudentStatus.DISMISSED;
+            System.out.println("Dear, student " + getFullName()
+                    + "! You are dismissed! LOL! Sad email for: " + getEmail());
+        } else {
+            System.out.println("Student (" + getFullName() + ") is stil alive! Congrats!");
+        }
+    }
+
+    public int compareTo(Student otherStudent) {
+        return this.getAverageMark().compareTo(otherStudent.getAverageMark());
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + " " + super.toString()
+                + " [averageMark=" + averageMark + ", courses=" + courses
+                + ", badMarksCount=" + badMarksCount + ", studentStatus=" + status + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + (this.averageMark != null ? this.averageMark.hashCode() : 0);
+        hash = 53 * hash + (this.courses != null ? this.courses.hashCode() : 0);
+        hash = 53 * hash + this.badMarksCount;
+        hash = 53 * hash + (this.status != null ? this.status.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Student other = (Student) obj;
+        if (this.averageMark != other.averageMark && (this.averageMark == null || !this.averageMark.equals(other.averageMark))) {
+            return false;
+        }
+        if (this.courses != other.courses && (this.courses == null || !this.courses.equals(other.courses))) {
+            return false;
+        }
+        if (this.badMarksCount != other.badMarksCount) {
+            return false;
+        }
+        if (this.status != other.status) {
+            return false;
+        }
+        return true;
+    }
 }
